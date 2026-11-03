@@ -84,13 +84,13 @@ Data sources, which is what actually decides where a notebook belongs:
 
 | Source file | Content |
 |---|---|
-| `osar_compiled\2025collection\<MBON> x <resp>.csv` | per-genotype raw OSAR (from nb 2) |
+| `osar_compiled\1. Results_output\<MBON> x <resp>.csv` | per-genotype raw OSAR (from nb 2) |
 | `*_totalcompilation.csv` | all-genotype OSAR compilation (from nb 2) |
 | `OSAR_bothresponders_Full*.xlsx` | OSAR effect sizes, both responders (from nb 3) |
 | `Falling_2026*.xlsx` | falling/climbing effect sizes (from nb 3) |
 | `Totalcomparisonofallmetrics-Full.xlsx` | **combined** OSAR + falling workbook (from nb 3) |
-| `Bootstrapped stats\*_bootstrap.csv` | per-genotype bootstrap draws (from *Bootstrap values*) |
-| `thesis_stats\*_thesis_stats.csv` | per-genotype appendix table (from *Appendix csv generation*) |
+| `2. Bootstrapped_stats\*_bootstrap.csv` | per-genotype bootstrap draws (from *Bootstrap values*) |
+| `3. summary_table\*_summary_table.csv` | per-genotype appendix table (from *Appendix csv generation*) |
 | `MBONlist.csv` | MBON metadata: number, lobe, neurotransmitter |
 
 | Notebook | Reads | Verdict |
@@ -99,10 +99,10 @@ Data sources, which is what actually decides where a notebook belongs:
 | `2. Multi-OSAR file processing new` | raw → compiled | **stay** (locked) |
 | `2. Multi-OSAR file processing` | raw → compiled | superseded by "new" → archive (locked, so: flag only) |
 | `3. Complete file generation` | compiled → OSAR / Falling / Combined xlsx | **stay** (locked) — it is the *producer* of the combined workbook the other repo will consume |
-| `Appendix csv generation` | 2025collection | **stay**, merge with Bootstrap values (§5) |
-| `Bootstrap values` | 2025collection | **stay**, merge with Appendix (§5) |
-| `Multi and single dabest OSAR plots` | totalcompilation, 2025collection | stay — OSAR only |
-| `Single dabest plot` | 2025collection | **stay** (explicitly) — OSAR only |
+| `Appendix csv generation` | 1. Results_output | **stay**, merge with Bootstrap values (§5) |
+| `Bootstrap values` | 1. Results_output | **stay**, merge with Appendix (§5) |
+| `Multi and single dabest OSAR plots` | totalcompilation, 1. Results_output | stay — OSAR only |
+| `Single dabest plot` | 1. Results_output | **stay** (explicitly) — OSAR only |
 | `Osar Phenomics` | combined xlsx | **stay** (explicitly) — but cells 13–19 are combined (§4) |
 | `Directionality Analysis` | OSAR_bothresponders, MBONlist | stay — OSAR only |
 | `Light Intensity Summary` | bootstrap csv, MBONlist | stay — OSAR only (contains its own vortex code, §5c) |
@@ -112,7 +112,7 @@ Data sources, which is what actually decides where a notebook belongs:
 | `Linregonly` | totalcompilation | archive — subset of "- new" (§5b) |
 | `Asovalencevsme` | combined xlsx | stay — loads the combined workbook but only uses `_OSAR` columns (Aso published data vs ours) |
 | `Fly Track Demo` | raw tracking | **stay** (explicitly) — demo/QC |
-| `Control fly analysis` | 2025collection | stay — OSAR control QC |
+| `Control fly analysis` | 1. Results_output | stay — OSAR control QC |
 | `Vortex Maps` | bootstrap csv, MBONlist | OSAR only, but earmarked to leave (§5c) |
 | `Metric_Clustering_Analysis` | combined xlsx | **move** — resolved, see §10 |
 | `Falling-OSAR heatmaps only` | combined + OSAR + falling | **split** (§4) — OSAR half stays as `OSAR heatmaps.ipynb` |
@@ -121,7 +121,7 @@ Data sources, which is what actually decides where a notebook belongs:
 | `Falling-OSAR comparison` | falling xlsx + totalcompilation | **move** |
 | `Falling-OSAR classification` | falling raw + totalcompilation | **move** (its "Code - OSAR" section duplicates work already in the OSAR notebooks) |
 | `Falling-OSAR Clusteringrelated` | combined xlsx | **move** |
-| `Falling-osar vortexmaps` | bootstrap + thesis_stats + falling | **move** |
+| `Falling-osar vortexmaps` | bootstrap + summary_table + falling | **move** |
 
 ---
 
@@ -254,13 +254,13 @@ them as a duplicate.
 ### 5a. `Appendix csv generation` + `Bootstrap values` → one notebook
 
 **What they are.** Both are batch stats exporters, not figure notebooks. Both walk the same
-input (`osar_compiled\2025collection\*.csv`), and for each *genotype × responder × light
+input (`osar_compiled\1. Results_output\*.csv`), and for each *genotype × responder × light
 intensity × metric* they run the same `dabest.load(...).hedges_g`. They differ only in what
 they write out of that one result:
 
 | | Appendix csv generation | Bootstrap values |
 |---|---|---|
-| Output | `thesis_stats\<MBON> x <resp>_thesis_stats.csv` + `<date>_all_osar_thesis_stats.csv` | `Bootstrapped stats\<MBON> x <resp>_bootstrap.csv` |
+| Output | `3. summary_table\<MBON> x <resp>_summary_table.csv` + `<date>_all_osar_summary_table.csv` | `2. Bootstrapped_stats\<MBON> x <resp>_bootstrap.csv` |
 | Row grain | 1 row per intensity × group (Control/Test) | 1 row per bootstrap draw |
 | Columns | genotype string, n, mean + 95% CI, Hedges' g + CI, metric | Hedges' g, CI, single bootstrap value |
 | Extra work | `summary_ci_1group` per group (5000 resamples) for the mean CI | keeps the full `bootstraps` array |
@@ -293,7 +293,7 @@ stop disagreeing about `R76B09` / `VT999036`.
 
 Downstream consumers to re-check after the merge:
 `_bootstrap.csv` → `Vortex Maps`, `Light Intensity Summary`, `Falling-osar vortexmaps`.
-`_thesis_stats.csv` → `Falling-osar vortexmaps` (and the written appendix).
+`_summary_table.csv` → `Falling-osar vortexmaps` (and the written appendix).
 
 ### 5b. `Linregonly` vs `Linregonly - new`
 
