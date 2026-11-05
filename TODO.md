@@ -22,12 +22,12 @@
 
 - [ ] Later: make a combined OSAR + climbing sample size workbook (the old `Compilation of sample sizes` file is gone)
 
-- [ ] First climbing copy (step 1 of `Organiziclimb.md`): set `last_processed = "20260428"` once, so `20260513` (never copied) is picked up. Files already in `DATA` are skipped by name
-- [ ] Typos in `Raw data files\Climbing` folder names, for that first copy: `SS81308` (20260608) and `SS1308` (20260622) should be `SS01308`. Add them to `name_fixes` in `1. Renamingfiles.ipynb` cell 3 after checking
+- [x] First climbing copy (done 2026-11-05): copied `20260513` and `20260619`-`20260811` only (163 logs). `20260429` and `20260608` were already in `DATA`
+- [x] Typos in climbing folder names (done 2026-11-05): raw `SS81308` (20260608) and `SS1308` (20260622) renamed to `SS01308`, and every climbing `SS46438` renamed to the correct `SS46348` (raw folders, `DATA` folders and log names, `Climbing_New` files). OSAR not touched
 - [ ] Ignored for now: every raw `w1118 x <driver> [G|R]` climbing folder from `20260429` on is empty (0 files). Some 2026-06 w1118 logs sit loose in `DATA\Climbing\Climbing_<resp>\WT\` instead of a `w1118 x <driver>` subfolder
-- [ ] Some `DATA\Climbing\Climbing_<resp>\WT\` folders have both `w1118 x <driver>` and `w1118 x <driver> [G]`/`[R]` versions (some with a double space). The copy cell uses the plain name
+- [ ] Some `DATA\Climbing\Climbing_<resp>\WT\` folders have both `w1118 x <driver>` and `w1118 x <driver> [G]`/`[R]` versions (some with a double space). The copy cell now adds files to the existing folder for the genotype and only makes a new one when none exists
 - [ ] Later: `Compilation with delta\2025climbingtoosarcomp` is left out of `Organiziclimb.md` for now. Nothing writes it any more (log2 speed and log2 bout speed moved into `1. Delta_g output` in Oct 2025), but `Asovalencevsme` and some CLOSAR notebooks still read it
 
-- [ ] Once, for every cross in `Climbing_New`: run only the sample size cell (cell 3) of `DrosoClimb\3. Multi-file processing.ipynb`, with `lst` set to all drivers, once for ACR and once for Chrimson2. It writes `Compilation with delta\samplesizes\<cross>_samplesize.csv` (Test, `w1118 x <driver>`, `w1118 x <responder>`) and `Totalosarclimbing\Climbing sample sizes_<date>.xlsx`. This downloads the w1118 ClimbLogs (~250 MB) and `Climbing_New` (~256 MB)
+- [x] (done 2026-11-05, all 50 drivers x 2 responders; `SS52050 x ACR` hit the `assert` and was re-run through notebook 2 first) Once, for every cross in `Climbing_New`: run only the sample size cell (cell 3) of `DrosoClimb\3. Multi-file processing.ipynb`, with `lst` set to all drivers, once for ACR and once for Chrimson2. It writes `Compilation with delta\samplesizes\<cross>_samplesize.csv` (Test, `w1118 x <driver>`, `w1118 x <responder>`) and `Totalosarclimbing\Climbing sample sizes_<date>.xlsx`. This downloads the w1118 ClimbLogs (~250 MB) and `Climbing_New` (~256 MB)
   - If a cross stops on the `assert` line, its `Climbing_New` file doesn't match `DATA` any more: re-run notebook 2 for it, then this cell
-- [ ] Do this together with the first full climbing run of the new data (`Raw data files\Climbing\Organiziclimb.md`). After that, sample sizes only update for the crosses in `lst`
+- [x] Do this together with the first full climbing run of the new data (`Raw data files\Climbing\Organiziclimb.md`). After that, sample sizes only update for the crosses in `lst`
